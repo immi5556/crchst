@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+	</head>
+	<body>
+		<div style="height:8%;background-color:green;">
+			<div style="float:left;">Church Spotter</div>
+			<div style="float:right;">
+			</div>
+		</div>
+		<div style="height:12%;background-color:red;">
+			Event section
+		</div>
+		<div style="height:80%;width:100%;overflow:hidden;" id="map"></div>
+		<script type="text/javascript">
+			var map, car;
+			var userip;
+			function getLocation() {
+				alert(userip);
+			    if (navigator.geolocation) {
+			        navigator.geolocation.getCurrentPosition(showPosition);
+			        $.getJSON('http://freegeoip.net/json/' + userip, function(data) {
+					  console.log(JSON.stringify(data, null, 2));
+					});
+			    } else {
+			        $.getJSON('http://freegeoip.net/json/' + userip, function(data) {
+					  console.log(JSON.stringify(data, null, 2));
+					});
+			    }
+			}
+
+		    function showPosition(position) {
+		    	pos = {
+		    			lat: position.coords.latitude  || 17.4812413,
+		    			lng: position.coords.longitude  || 78.4970369
+					};
+		       map = new google.maps.Map(document.getElementById('map'), {
+		          center: pos,
+		          disableDefaultUI: true,
+		          zoom: 14
+		       });
+
+		       car = new google.maps.Marker({
+				position: pos,
+				map: map,
+				title: 'Its Me',
+				icon: 'car.png'
+			  });
+			  car.addListener('click', toggleBounce);
+
+			  //getChurches();
+		    }
+		</script>
+		<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E&callback=getLocation" async defer></script>
+	</body>
+</html>
