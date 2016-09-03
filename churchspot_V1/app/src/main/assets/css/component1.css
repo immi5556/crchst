@@ -182,29 +182,29 @@ items should be rotated by x, minus (sum of angles - 180)2s (for this demo) */
   transform: rotate(150deg) skew(50deg);
 }
 
-.csstransforms .cn-wrapper li:nth-child(odd) a {
+.csstransforms .cn-wrapper li:nth-child(odd) {
   background-color: #a11313;
   background-color: hsla(0, 88%, 63%, 1);
 }
 
-.csstransforms .cn-wrapper li:nth-child(even) a {
+.csstransforms .cn-wrapper li:nth-child(even) {
   background-color: #a61414;
   background-color: hsla(0, 88%, 65%, 1);
 }
 
 /* active style */
-.csstransforms .cn-wrapper li.active a {
+.csstransforms .cn-wrapper li.active {
   background-color: #b31515;
   background-color: hsla(0, 88%, 70%, 1);
 }
 
 
 /* hover style */
-.csstransforms .cn-wrapper li:not(.active) a:hover,
-.csstransforms .cn-wrapper li:not(.active) a:active,
-.csstransforms .cn-wrapper li:not(.active) a:focus {
+.csstransforms .cn-wrapper li:not(.active):hover,
+.csstransforms .cn-wrapper li:not(.active):active,
+.csstransforms .cn-wrapper li:not(.active):focus {
   background-color: #b31515;
-  background-color: hsla(0, 88%, 70%, 1);
+  background-color: hsla(0, 88%, 90%, 1);
 }
 .csstransforms .cn-wrapper li:not(.active) a:focus
 {

@@ -23,28 +23,49 @@
 				<button class="cn-button" id="cn-button">+</button>
 				<div class="cn-wrapper" id="cn-wrapper">
 					<ul>
-						<li><a href="#"><span class="icon-picture"></span></a></li>
-						<li><a href="#"><span class="icon-headphones"></span></a></li>
-						<li><a href="#"><span class="icon-home"></span></a></li>
-						<li><a href="#"><span class="icon-facetime-video"></span></a></li>
-						<li><a href="#"><span class="icon-envelope-alt"></span></a></li>
+						<li class="share-input circ-menu" style="background-color:hsla(0, 88%, 65%, 1);"><a><i class="fa fa-share-alt" aria-hidden="true"></i></a></li>
+						<li class="search-input circ-menu" style="background-color:hsla(0, 88%, 77%, 1);"><a><i class="fa fa-search" aria-hidden="true"></i></a></li>
+						<li class="home-input circ-menu" style="background-color:hsla(0, 88%, 65%, 1);"><a><i class="fa fa-home" aria-hidden="true"></i></a></li>
+						<li class="audio-input circ-menu" style="background-color:hsla(0, 88%, 77%, 1);"><a><i class="fa fa-volume-off" aria-hidden="true"></i></a></li>
+						<li class="mail-input circ-menu" style="background-color:hsla(0, 88%, 65%, 1);"><a><i class="fa fa-envelope-o" aria-hidden="true"></i></a></li>
 					</ul>
 				</div>
 				<div id="cn-overlay" class="cn-overlay"></div>
 				<!-- End Nav Structure -->
 			</div>
 		</div>
+        <div id="mapErrorMsg"></div>
+        <div style="width:100%;oveflow:hidden;z-index:1001;height:60px;position: fixed;left: 0px;top:0px;text-align:center;">
+            <textarea id="add_address" style="width:100%;" rows="2"></textarea>
+            <img src="addr_tick.png" style="width:40px;height:40px;" />
+        </div>
 		<script src="js/polyfills.js"></script>
 		<script src="js/demo1.js"></script>
+        <script type="text/javascript">
+            var settings = {
+                audioinput : true
+            };
+            $(".circ-menu").on("mousedown", function(){
+                var self = this;
+                $(self).fadeOut("fast", function(){
+                    $(self).fadeIn("fast");
+                });
+            });
+            $(".audio-input").on("click", function(){
+                $(this).find("i").toggleClass("fa-volume-off");
+                $(this).find("i").toggleClass("fa-volume-up");
+                settings.audioinput = !settings.audioinput;
+            });
+        </script>
 		<script type="text/javascript">
 
 			//AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E
-			var map, car;
+			var map, car, addmarker, addlatlng;
 		    function setMap(lat, lng) {
-		    	pos = {
-		    			lat: lat || 17.4812413,
-		    			lng: lng || 78.4970369
-					};
+		       pos = {
+		    		lat: lat || 17.4812413,
+		    		lng: lng || 78.4970369
+			   };
 		       map = new google.maps.Map(document.getElementById('map'), {
 		          center: pos,
 		          disableDefaultUI: true,
@@ -59,8 +80,39 @@
 			  });
 			  car.addListener('click', toggleBounce);
 
-			  //getChurches();
+			  getChurches();
+
+			   addmarker = new google.maps.Marker({
+                    map:map,
+                    draggable:true,
+                    animation: google.maps.Animation.DROP
+               });
+
+               google.maps.event.addListener(addmarker, 'dragend', function(){
+                   geocodePosition(addmarker.getPosition());
+               });
+
+               google.maps.event.addListener(map, "click", function (e) {
+                    addlatlng = e.latLng;
+                    addmarker.setPosition(addlatlng);
+                });
 		    }
+
+		    function geocodePosition(pos) {
+               geocoder = new google.maps.Geocoder();
+               geocoder.geocode({
+                    latLng: pos
+                },
+                function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        $("#add_address").val(results[0].formatted_address);
+                        //$("#mapErrorMsg").hide(100);
+                    }
+                    else {
+                        $("#mapErrorMsg").html('Cannot determine address at this location.'+status).show(100);
+                    }
+                });
+            }
 
 		    function toggleBounce() {
 			  if (car.getAnimation() !== null) {
@@ -131,11 +183,16 @@
 				});
 			}
 
+			$(document).on("click", ".add-church", function(){
+			});
+
 		    function checkandr(){
 		    	alert('Lord Jesus My Teacher');
 		    }
+
+
 		</script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E" async defer></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E&callback=setMap" async defer></script>
 
 	</body>
 </html>

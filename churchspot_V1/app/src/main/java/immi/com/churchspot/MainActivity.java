@@ -2,6 +2,7 @@ package immi.com.churchspot;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         //myBrowser.loadUrl("javascript:changeCenter(" + latitude + "," + longitude + ")");
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+    }
+    //Chromeclient
     private class MyJavaScriptChromeClient extends WebChromeClient {
         @Override
         public boolean onJsAlert(WebView view, String url, String message,final JsResult result) {
@@ -79,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            myBrowser.loadUrl("javascript:setMap(" + latitude + "," + longitude + ");");
-            myBrowser.loadUrl("javascript:getChurches();");
+            //myBrowser.loadUrl("javascript:setMap(" + latitude + "," + longitude + ");");
+            //myBrowser.loadUrl("javascript:getChurches();");
         }
     }
 }
